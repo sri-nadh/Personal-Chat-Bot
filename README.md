@@ -1,47 +1,70 @@
-# Personal ChatBot with Short-Term Memory using Ollama and LangChain
+# 🧠 Ollama Personal Chatbot with Short-Term Memory
 
-This project is a lightweight personal chatbot built using the [LangChain](https://www.langchain.com/) framework and [Ollama](https://ollama.com/) for running local LLMs. The chatbot supports short-term memory via `RunnableWithMessageHistory`, allowing it to remember the conversation context within a session.
+A sleek, dark-themed personal AI chatbot built using **FastAPI**, **LangChain**, and **Ollama**, enhanced with short-term memory using `RunnableWithMessageHistory`. Includes a simple, responsive web UI and session handling logic that ends conversations cleanly when the user says "bye".
 
-## Features
+---
 
-* **Local LLM Inference**: Powered by `llama3.1` via the `ChatOllama` interface.
-* **Session-Based Memory**: Remembers user interaction within a session using in-memory chat history.
-* **Lightweight CLI Interface**: Interact with the chatbot directly in your terminal.
+## 🔍 Features
 
-## How It Works
+* ✅ Chatbot powered by `llama3.1` from Ollama
+* ✅ Maintains short-term context across messages using LangChain memory
+* ✅ Simple frontend with a modern dark UI (HTML + CSS)
+* ✅ Session termination: saying "bye" ends the chat and disables further messages
+* ✅ Supports CORS and static file serving with FastAPI
 
-1. A prompt template is defined with a system message, a placeholder for chat history, and a dynamic user query.
-2. `ChatOllama` serves as the backend LLM.
-3. `RunnableWithMessageHistory` from LangChain wraps the pipeline to add memory support.
-4. The chatbot runs in a loop and remembers messages as long as the session is active.
+---
 
-## Installation
+## 🖼️ UI Preview
 
-Make sure you have the following installed:
+> Dark-mode chat layout with colored user and bot messages
+> *(Insert screenshot or demo GIF here)*
 
-* Python 3.8+
-* [Ollama](https://ollama.com/download)
-* Required Python libraries:
+---
 
-```bash
-pip install langchain langchain_community
-```
+## 🚀 Getting Started
 
-## Usage
+### 1. Prerequisites
 
-1. Start the Ollama server and ensure `llama3.1` model is available:
+* Python 3.10+
+* [Ollama](https://ollama.com) installed and running
+* Required Python packages
 
-```bash
-ollama run llama3.1
-```
-
-2. Run the chatbot:
+### 2. Clone & Install
 
 ```bash
-python Chat-App.py
+git clone https://github.com/yourusername/ollama-chatbot.git
+cd ollama-chatbot
+pip install -r requirements.txt
 ```
 
-3. Type your messages. Type `done` to exit the chat session.
+Contents of `requirements.txt`:
+
+```
+fastapi
+uvicorn
+langchain
+langchain-ollama
+httpx
+```
+
+### 3. Start the Server
+
+```bash
+uvicorn main:app --reload
+```
+
+### 4. Access the App
+
+Open your browser and go to:
+
+```
+http://localhost:8000
+```
+
+---
+
+
+
 
 
 
