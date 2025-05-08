@@ -14,13 +14,6 @@ A sleek, dark-themed personal AI chatbot built using **FastAPI**, **LangChain**,
 
 ---
 
-## 🖼️ UI Preview
-
-> Dark-mode chat layout with colored user and bot messages
-> *(Insert screenshot or demo GIF here)*
-
----
-
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
