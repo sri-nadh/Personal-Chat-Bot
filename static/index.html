@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ollama ChatBot - Dark Theme</title>
+  <style>
+    /* CSS Custom Properties for easy theming */
+    :root {
+      --bg-color: #000000;
+      --text-color: #E0E0E0;
+      --user-color: #4FC3F7;
+      --bot-color:  #FFC107;
+      --secondary-color: #757575;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 40px;
+      background: #111;               /* Slight lift above pure black */
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .header {
+      background: #222;
+      padding: 16px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .chat-box {
+      height: 400px;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+
+    .message.user {
+      text-align: right;
+      color: var(--user-color);
+    }
+
+    .message.bot {
+      text-align: left;
+      color: var(--bot-color);
+    }
+
+    .input-area {
+      display: flex;
+      border-top: 1px solid #333;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px;
+      background: #111;
+      border: none;
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    .input-area button {
+      padding: 12px 20px;
+      background: var(--user-color);
+      border: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .input-area button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">Ollama Bot</div>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type your message…" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML += `<div class="message user">You: ${msg}</div>`;
+      input.value = "";
+
+      try {
+        const res = await fetch("/chat_bot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_message: msg })
+        });
+        const data = await res.json();
+        chatBox.innerHTML += `<div class="message bot">Bot: ${data.response}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (e) {
+        chatBox.innerHTML += `<div class="message bot">Error: Unable to reach server.</div>`;
+      }
+    }
+  </script>
+</body>
+</html>
