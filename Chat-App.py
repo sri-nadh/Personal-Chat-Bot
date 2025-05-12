@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -79,7 +79,9 @@ async def chat_bot(request: RequestSchema):
         input={"query": user_input},
         config={"configurable": {"session_id":SESSION_ID }}
     )
+    
     return JSONResponse(content={"response": response.content})
+
 
 if __name__ == "__main__":
     uvicorn.run(app=app,host="0.0.0.0",port=8000)
