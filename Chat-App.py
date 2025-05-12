@@ -15,6 +15,7 @@ app = FastAPI()
 class RequestSchema(BaseModel):
     user_message: str
 
+#Adding cross orgin resource sharing configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,8 +24,10 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+# Mounting the static files like html,css,js from static directory to fastapi instance
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# frontend endpoint , serving static files
 @app.get("/", response_class=HTMLResponse)
 async def read_index():
     with open("static/index.html", "r", encoding="utf-8") as f:
@@ -40,12 +43,16 @@ prompt = ChatPromptTemplate.from_messages([
 llm = ChatOllama(model="llama3.1")
 runnable = prompt | llm
 
+
+#Function to retrieve the chat history associated with the session-id
 _histories: dict[str, ChatMessageHistory] = {}
 def get_history(session_id: str) -> ChatMessageHistory:
     if session_id not in _histories:
         _histories[session_id] = ChatMessageHistory()
     return _histories[session_id]
 
+
+# Langchain runnable for wrapping the llm with message history
 chat_with_memory = RunnableWithMessageHistory(
     runnable,
     get_session_history=get_history,
@@ -53,9 +60,13 @@ chat_with_memory = RunnableWithMessageHistory(
     history_messages_key="history"
 )
 
+
+# terminated session to check the end of a chat
 _terminated_sessions: set[str] = set() #terminated session is added to this, to check and issue session over message to the user.
 SESSION_ID="session_1"
 
+
+# Chat bot endpoint where the user messages are sent for llm response
 @app.post("/chat_bot")
 async def chat_bot(request: RequestSchema):
     user_input = request.user_message.strip()
